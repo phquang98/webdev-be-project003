@@ -1,6 +1,6 @@
 # Simple API Program
 
-Acts as a reference on how to setup an API, with all the bloatty ways out there to write a NET 7 API.
+Acts as a reference on how to setup an API, with all the bloatty ways out there to write a NET 7 API.\
 Tech: NET 7 + EF + Swagger
 
 ## Libs
