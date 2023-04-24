@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Reflection;
 using System;
+using System.Net.NetworkInformation;
 
 // this class won't use attributes & ControllerBase to show what's the diff
 // this's a static class -> use a static general-purpose util class -> Results
@@ -55,6 +56,31 @@ namespace simple_api_program.Controllers
             var tmp = await fetchRes.Content.ReadAsStringAsync();
             var jsonResBody = JsonSerializer.Serialize(tmp);
             return Results.Ok(jsonResBody);
+        }
+
+        // TODO: these examples do not work, fix it
+        // Code using Task.Results
+        public static HttpResponseMessage CustomResult()
+        {
+            var fetchRes = httpClient.GetAsync(
+                $"https://jsonplaceholder.typicode.com/users/5"
+            );
+
+            Console.WriteLine(fetchRes.Result);
+            Console.WriteLine("Running async op using Task.Result...");
+            return fetchRes.Result;
+        }
+
+        // TODO: these examples do not work, fix it
+        public static async Task<HttpResponseMessage> CustomAsync()
+        {
+            var fetchRes = await httpClient.GetAsync(
+                $"https://jsonplaceholder.typicode.com/users/5"
+            );
+
+            Console.WriteLine(fetchRes);
+            Console.WriteLine("Running async op using async-await...");
+            return fetchRes;
         }
     }
 }

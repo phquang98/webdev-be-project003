@@ -47,16 +47,16 @@ builder.Services.AddHealthChecks();
 
 // --- Configs
 
-
-
 var app = builder.Build();
 
 // --- Middlewares
 //app.UseRouting(); // matching incoming reqs to the corresponding endpoint, always top, default in minimal API
 //app.UseMvc(); // not needed as using endpoints routing already in minimal API, also deprecated
-app.UseCors();  // placed after UseRouting, but before UseAuthorization and MapControllers
+//app.UseCors();  // placed after UseRouting, but before UseAuthorization and MapControllers
+//app.MapEndpoints();   // used to add custom mdwr logic to endpoints
 //app.UseEndpoints(endpoints =>
 //{
+//    // Here, define all avail endpoints accessable to any path
 //    endpoints.MapControllers();
 //});   // after matching, send incoming reqs to appropriate endpoint hdlr, redudance in minimal API as already directly send reqs to designated endpoints under MapGet, ...
 if (app.Environment.IsDevelopment())
@@ -75,12 +75,14 @@ app.MapHealthChecks("/healthz").RequireHost("*:9002");
 
 app.MapGet("/", () => "Hello World!");
 app.MapGet("/customhealthcheck", () => MiniAPI.HealthChecking());
-
 //app.MapGet("/special-healthcheck", () => MiniAPI.HealthChecking()).RequireAuthorization();
 app.MapGet(
     "/test/{jsonPlaceHolderIdHere}",
     (int jsonPlaceHolderIdHere) => MiniAPI.GetOneUserById(jsonPlaceHolderIdHere)
 );
+app.MapGet("/result", () => MiniAPI.CustomResult());
+app.MapGet("/async", async () => await MiniAPI.CustomAsync());
+
 
 // --- Start
 
